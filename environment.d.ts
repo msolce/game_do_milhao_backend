@@ -6,6 +6,7 @@ declare global {
         JWT_SECRET: string;
         GAME_DO_MILHAO_NS:string;
         HEADER_START: string;
+        REQ_TRIVIA_01: string;
         
       }
     }
