@@ -1,12 +1,15 @@
 import express from 'express';
-import {login, perguntas01} from '../controllers/main'
+import {login, novaPartida, responder, apagarTudo } from '../controllers/main'
 import { authMiddleware } from '../middlewares/auth';
 
 
 const router = express.Router();
 
 router.route('/login').post(login);
-router.route('/pergunta01').get(authMiddleware, perguntas01);
+router.route('/nova-partida').get(authMiddleware,novaPartida);
+router.route('/responder').post(authMiddleware,responder);
+router.route('/apagar-tudo').delete(authMiddleware, apagarTudo);
+
 
 export {router as mainRouter};
 

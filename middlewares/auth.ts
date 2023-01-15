@@ -12,8 +12,8 @@ const authMiddleware = async (req:Request, res:Response, next:any) => {
     
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const {date, username, objectId} = decoded;
-        req.user = {date, username, objectId};
+        const {date, email} = decoded;
+        req.user = {date, email};
         next();
     } catch (error) {
         res.json({msg: 'token invalid'});

@@ -1,4 +1,4 @@
-import mongodb from 'mongodb';
+import mongodb, {ObjectId} from 'mongodb';
 // const ObjectId = mongodb.ObjectId;
 
 let users:any;
@@ -15,11 +15,11 @@ class UsersDAO {
         }
     };
 
-    static async getUser(username:string){
+    static async getUser(email:string){
         
         try {
             const userObject = {
-                username: username
+                email: email
             };
 
             const usuario = await users.findOne(userObject);
@@ -29,7 +29,9 @@ class UsersDAO {
         } catch (error) {
             console.error(`Erro ao procurar username`)
         }
-    }
+    };
+
+    
 
 };
 

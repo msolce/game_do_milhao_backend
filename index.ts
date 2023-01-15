@@ -5,7 +5,8 @@ import cors from 'cors';
 require('express-async-errors');
 import {mainRouter} from './routes/main';
 import {UsersDAO} from './DAO/usersDAO';
-import { PerguntaDAO } from './DAO/gravarPergunta';
+import { PerguntaDAO } from './DAO/perguntaDAO';
+import { PartidaDAO } from './DAO/partidaDAO';
 
 dotenv.config();
 const app: Express = express();
@@ -26,6 +27,7 @@ const start = async () => {
         const client = await connectDB(process.env.URI_DB);
         await UsersDAO.injectDB(client);
         await PerguntaDAO.injectDB(client);
+        await PartidaDAO.injectDB(client);
         app.listen(port, () => {
             console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
         })
