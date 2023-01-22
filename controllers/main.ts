@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 
 
 const login = async (req: Request, res: Response) => {
+    console.log("🚀 ~ file: main.ts:11 ~ login ~ req", req)
     const {email, password} = req.body;
     
     if(!email || !password){
