@@ -35,6 +35,11 @@ class PerguntaDAO{
     };
     
     static async checkResposta(perguntaId:any, resposta:any){
+    console.log("🚀 ~ file: perguntaDAO.ts:38 ~ PerguntaDAO ~ checkResposta ~ resposta", resposta)
+    console.log("🚀 ~ file: perguntaDAO.ts:38 ~ PerguntaDAO ~ checkResposta ~ perguntaId", perguntaId)
+
+
+        
         try {
                       
             const perguntaAtualizada = await pergunta.findOneAndUpdate(                

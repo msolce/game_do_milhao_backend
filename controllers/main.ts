@@ -8,7 +8,7 @@ import { ObjectId } from 'mongodb';
 
 
 const login = async (req: Request, res: Response) => {
-    console.log("🚀 ~ file: main.ts:11 ~ login ~ req", req)
+
     const {email, password} = req.body;
     
     if(!email || !password){
@@ -57,7 +57,8 @@ const responder = async (req : Request, res: Response) => {
     
     const usuario = await UsersDAO.getUser(req.user.email);
     const reqBody = req.body;
-    const pergunta_id = reqBody.pergunta_id;
+    console.log("🚀 ~ file: main.ts:60 ~ responder ~ reqBody", reqBody)
+    const pergunta_id = reqBody.pergunta;
     const resposta_user = reqBody.resposta_user;
     
     const checkResposta = await PerguntaDAO.checkResposta(pergunta_id, resposta_user);

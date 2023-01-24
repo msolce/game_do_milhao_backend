@@ -6,7 +6,7 @@ import { authMiddleware } from '../middlewares/auth';
 const router = express.Router();
 
 router.route('/login').post(login);
-router.route('/nova-partida').get(authMiddleware,novaPartida);
+router.route('/nova-partida').post(authMiddleware,novaPartida);
 router.route('/responder').post(authMiddleware,responder);
 router.route('/apagar-tudo').delete(authMiddleware, apagarTudo);
 
