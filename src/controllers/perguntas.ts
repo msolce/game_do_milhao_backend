@@ -1,6 +1,8 @@
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 
-function shuffleArray(arr){
+
+
+function shuffleArray(arr:any){
     //Loop em todos os elementos
     for (let i = arr.length - 1; i > 0; i-- ){
         //Escolhendo elemento aleatório
@@ -13,18 +15,18 @@ function shuffleArray(arr){
 
 
 
-function perguntas01req(): Promise {
-    const urlReqTrivia = process.env.REQ_TRIVIA_01;
+function perguntas01req(): any {
+    const urlReqTrivia: URL = process.env.REQ_TRIVIA_01 as any;
     return fetch(urlReqTrivia)
             .then(res => res.json())
-            .then(res => res.results)
+            .then(res => res[0])
             .then(results => {
-                const {correct_answer, incorrect_answers } = results[0]; 
-                const arrayAnswers = [...incorrect_answers,correct_answer];
+                const {correctAnswer, incorrectAnswers } = results; 
+                const arrayAnswers = [...incorrectAnswers,correctAnswer];
                 const arrayAnswersEmbaralhado = shuffleArray(arrayAnswers);    
-                results[0].answers_Embaralhado = arrayAnswersEmbaralhado;
+                results.answers_Embaralhado = arrayAnswersEmbaralhado;
                          
-                return results[0]
+                return results
             })
             .catch( e => {
                 console.log(e)

@@ -35,10 +35,6 @@ class PerguntaDAO{
     };
     
     static async checkResposta(perguntaId:any, resposta:any){
-    console.log("🚀 ~ file: perguntaDAO.ts:38 ~ PerguntaDAO ~ checkResposta ~ resposta", resposta)
-    console.log("🚀 ~ file: perguntaDAO.ts:38 ~ PerguntaDAO ~ checkResposta ~ perguntaId", perguntaId)
-
-
         
         try {
                       
@@ -46,7 +42,7 @@ class PerguntaDAO{
                     { _id: new ObjectId(perguntaId) },
                     { $set : {user_answer: resposta}}
                 );
-            const respostaCorreta = perguntaAtualizada.value.pergun.correct_answer;
+            const respostaCorreta = perguntaAtualizada.value.pergun.correctAnswer;
 
             if(resposta == respostaCorreta){
                 return true;

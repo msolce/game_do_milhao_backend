@@ -1,6 +1,6 @@
 const mongodb = require('mongodb');
 
-const connectDB = (conn:string) =>{
+const connectDB = (conn:any) =>{
     const MongoClient = mongodb.MongoClient;
     
     try {

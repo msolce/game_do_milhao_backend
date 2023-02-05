@@ -48,9 +48,9 @@ class PartidaDAO {
         try {
             const atualizaPartida = await partida.findOneAndUpdate(
                 {_id: new ObjectId(partidaId)},
-                {$inc: { totalRespondidas: 1}}
+                {$inc: { totalRespondidas: 1}},
+                {returnDocument:'after'}
             );
-
             return atualizaPartida;
 
         } catch (error) {

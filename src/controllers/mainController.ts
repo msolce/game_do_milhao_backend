@@ -6,6 +6,10 @@ import { PerguntaDAO } from '../DAO/perguntaDAO';
 import { PartidaDAO } from '../DAO/partidaDAO';
 import { ObjectId } from 'mongodb';
 
+interface RequestMiddleware extends Request {
+    user?:any,
+    headers:any
+};
 
 const login = async (req: Request, res: Response) => {
 
@@ -25,8 +29,9 @@ const login = async (req: Request, res: Response) => {
 
     //Se usuário existe testa a senha e retorna
     if (dadosUsuario.password === password){
+
         const date = new Date().getDate();
-        const token = jwt.sign({date, email}, process.env.JWT_SECRET, {expiresIn: '10d'});
+        const token = jwt.sign({date, email}, process.env.JWT_SECRET as string, {expiresIn: '10d'});
 
         res.json({msg: 'logado', token});
     
@@ -34,16 +39,18 @@ const login = async (req: Request, res: Response) => {
         res.json({msg: 'senha inválida', });
     }
 }
-const novaPartida = async (req: Request, res: Response) => {
+const novaPartida = async (req: RequestMiddleware, res: Response) => {
         
     const usuario = await UsersDAO.getUser(req.user.email);
+    
     const partida = await PartidaDAO.novaPartida(usuario._id);
-    const partidaCriada = await PartidaDAO.getPartida(partida.insertedId);
+    // console.log("🚀 ~ file: mainController.ts:46 ~ novaPartida ~ partida", partida)
+    // const partidaCriada = await PartidaDAO.getPartida(partida.insertedId);
     const pergunta = await perguntas01req();
     const gravaPergunta = await PerguntaDAO.gravarPergunta(pergunta, usuario._id, partida.insertedId);
     
     const data = {
-        partida: partidaCriada,
+        partida: partida.insertedId,
         pergunta_id: gravaPergunta.insertedId,
         pergunta: pergunta.question,
         respostas: pergunta.answers_Embaralhado
@@ -53,11 +60,12 @@ const novaPartida = async (req: Request, res: Response) => {
     res.json(data);
 };
 
-const responder = async (req : Request, res: Response) => {
+
+const responder = async (req : RequestMiddleware, res: Response) => {
     
     const usuario = await UsersDAO.getUser(req.user.email);
     const reqBody = req.body;
-    console.log("🚀 ~ file: main.ts:60 ~ responder ~ reqBody", reqBody)
+    
     const pergunta_id = reqBody.pergunta;
     const resposta_user = reqBody.resposta_user;
     
@@ -67,13 +75,15 @@ const responder = async (req : Request, res: Response) => {
         //codigo quando acertar uma resposta
         const atualizarPartida = await PartidaDAO.respostaCerta(reqBody.partida._id);
         
-        const pergunta = await perguntas01req();
+        
+        const pergunta = await perguntas01req() as any;
         const gravaPergunta = await PerguntaDAO.gravarPergunta(pergunta, new ObjectId(usuario._id), new ObjectId(reqBody.partida._id));
         const data = {
-            partida: reqBody.partida._id,
+            partida: pergunta_id,
             pergunta_id: gravaPergunta.insertedId,
             pergunta: pergunta.question,
-            respostas: pergunta.answers_Embaralhado
+            respostas: pergunta.answers_Embaralhado,
+            totalRespondidas: atualizarPartida.value.totalRespondidas
         };
         
         res.json(data);
@@ -89,9 +99,8 @@ const responder = async (req : Request, res: Response) => {
 
  };
 
- const apagarTudo = async (req: any, res:any) => {
+const apagarTudo = async (req: Request, res:Response) => {
 
-  
          const a = await PartidaDAO.apagarTudo();
          const b = await PerguntaDAO.apagarTudo();
          
@@ -100,10 +109,20 @@ const responder = async (req : Request, res: Response) => {
 
  };
 
+const teste = async (req: Request, res: Response) => {
+    res.json({msg: `ppasteaning?a`})
+};
+
+
+// const pula = async (req:any, res:any) => {
+
+// };
 
 export {
         login,
         novaPartida,
         responder,
-        apagarTudo
-       }
+        apagarTudo,
+        RequestMiddleware,
+        teste
+       };
